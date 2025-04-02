@@ -10,6 +10,14 @@ uart.init(9600, bits=8, parity=None, stop=1)
 # initialize pin 2 as  an output
 led = Pin(2,Pin.OUT)
 
+a=input('type something and hit enter: ')
+b = a.encode()
+
+# b=b'AZab3030903030303YB'
+
+uart.write(b)
+
+s = b''
 # run forever
 while True:
     # read one byte
@@ -17,14 +25,10 @@ while True:
     # if c is not empty:
     if c is not None:
         # write the byte back out to uart
-        print(c)
+        s+=c
+        print(s)
         # toggle the onboard LED
         led.value(led.value()^1)
-	# sleep for a very small amount of time
-    else:
-        # uart.write(b'test\n')
-        a=input('type something and hit enter: ')
-        # send that value
-        uart.write(a.encode())
 
-    time.sleep(.1)
+    if len(s)>100:
+        s=b''
